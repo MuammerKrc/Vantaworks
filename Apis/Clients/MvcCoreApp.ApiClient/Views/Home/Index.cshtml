@@ -1,0 +1,96 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+    int countSlide = 0;
+    int countNav = 0;
+}
+
+@model HomePageViewModel
+
+@section Css
+{
+    <link rel="stylesheet" href="~/css/homePages.css" />
+}
+@section Scriptss{
+    <script src="~/js/homePage.js"></script>
+}
+
+
+<div class="row">
+
+    <div class="col-12">
+
+        <div class="img-slider">
+            @foreach (var slide in Model.Sliders)
+            {
+                if (countSlide == 0)
+                {
+                    <div class="slide makeActive">
+                        <img src="~/photos/@(slide.ImageUrl)" alt="">
+                        <div class="info">
+                            <h2>@slide.Title</h2>
+                            <p>@slide.Description.ToUpper()</p>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="slide">
+                        <img src="~/photos/@(slide.ImageUrl)" alt="">
+                        <div class="info">
+                            <h2>@slide.Title</h2>
+                            <p>@slide.Description.ToUpper()</p>
+                        </div>
+                    </div>
+                }
+                countSlide++;
+            }
+
+            <div class="resim-navigator">
+                @foreach (var nav in Model.Sliders)
+                {
+                    if (countNav == 0)
+                    {
+                        <div class="nvgt-btn makeActive"></div>
+                    }
+                    else
+                    {
+                        <div class="nvgt-btn"></div>
+                    }
+                    countNav++;
+                }
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12">
+
+        <div class="card">
+            <div class="card-header">
+                <div class="d-flex  justify-content-around flex-wrap">
+                    @foreach (var item in Model.Categories)
+                    {
+                        <div class="p-2">
+                            <a asp-action="Index" asp-route-activeCategory="@item.Id" style="width:150px;" class="btn btn-outline-primary @(Model.ActiveCategoryId == item.Id ? "active":"")">@item.Name</a>
+                        </div>
+                    }
+                </div>
+            </div>
+            <div class="card-body">
+
+                <div class="d-flex flex-row justify-content-around flex-wrap mt-5">
+                    @foreach (var item in Model.Recipes)
+                    {
+                        <div class="card mt-2" style="width: 250px;">
+                            <img class="card-img-top" style="width:100%;height:150px;" src="~/photos/@(item.ImageUrl)" alt="food foto">
+                            <div class="card-body">
+                                <h5 class="card-title">@item.Name</h5>
+                                <p class="card-text" style="height:50px; overflow:hidden;">@item.Description</p>
+                                <p class="card-text"><small class="text-muted">@item.Price ₺</small></p>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
